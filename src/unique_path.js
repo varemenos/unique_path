@@ -113,6 +113,10 @@
     };
 
     uniquePath.get = function (el) {
+        if (!el) {
+            return false;
+        }
+
         var path = [];
         var specificity;
 
