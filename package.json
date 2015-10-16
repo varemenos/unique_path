@@ -6,7 +6,7 @@
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run"
   },
-  "devDependencies": {
+  "dependencies": {
     "jasmine": "^2.3.2",
     "karma": "^0.13.9",
     "karma-html2js-preprocessor": "^0.1.0",
