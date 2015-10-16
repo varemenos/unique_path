@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/unique_path.js",
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start test/karma.conf.js --single-run"
+    "test": "karma start test/karma.conf.js --single-run"
   },
   "devDependencies": {
     "eslint": "^1.2.1",
