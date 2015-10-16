@@ -1,4 +1,4 @@
-describe('unique_path', function () {
+xdescribe('unique_path', function () {
     'use strict';
 
     it('should work for all elements in the DOM', function () {
