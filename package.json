@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "main": "src/unique_path.js",
-  "directories": {
-    "test": "test"
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start test/karma.conf.js --single-run"
   },
   "devDependencies": {
     "eslint": "^1.2.1",
