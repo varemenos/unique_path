@@ -8,7 +8,6 @@ module.exports = function (config) {
         plugins: [
             'karma-jasmine',
             'karma-html2js-preprocessor',
-            'karma-coverage',
             'karma-phantomjs-launcher',
             'karma-spec-reporter'
         ],
@@ -17,12 +16,8 @@ module.exports = function (config) {
             'test/dom.js',
             'test/spec/**/*.spec.js'
         ],
-        preprocessors: {
-            'src/**/*.js': ['coverage']
-        },
         reporters: [
-            'spec',
-            'coverage'
+            'spec'
         ]
     });
 };

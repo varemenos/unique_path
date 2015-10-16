@@ -9,7 +9,6 @@
   "devDependencies": {
     "jasmine": "^2.3.2",
     "karma": "^0.13.9",
-    "karma-coverage": "^0.5.1",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.1",
