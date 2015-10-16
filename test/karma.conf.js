@@ -5,6 +5,13 @@ module.exports = function (config) {
         basePath: '../',
         frameworks: ['jasmine'],
         browsers: ['PhantomJS'],
+        plugins: [
+            'karma-jasmine',
+            'karma-html2js-preprocessor',
+            'karma-coverage',
+            'karma-phantomjs-launcher',
+            'karma-spec-reporter'
+        ],
         files: [
             'src/**/*.js',
             'test/dom.js',
