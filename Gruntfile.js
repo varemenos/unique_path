@@ -15,5 +15,7 @@ module.exports = function (grunt) {
     });
     grunt.initConfig(configs);
 
-    grunt.registerTask('default', ['karma:continuous']);
+    grunt.registerTask('default', [
+        'karma:continuous'
+    ]);
 };

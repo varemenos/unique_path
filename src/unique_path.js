@@ -9,24 +9,25 @@
     }
 })(this, 'uniquePath', function () {
     'use strict';
+
     var uniquePath = {};
 
-    uniquePath.separator = ' ';
-
     uniquePath.selectorFromPath = function (givenPath) {
-        var selector = givenPath.map(function (chunk) {
-            return chunk.selector.value;
-        }).join(uniquePath.separator);
+        var selector = givenPath
+            .map(function (chunk) {
+                return chunk.selector.value + chunk.separator;
+            })
+            .join(' ');
 
-        return selector;
+        return selector.trim();
     };
 
     uniquePath.getSpecificity = function (path) {
         var selector;
 
-        if (typeof path === 'object') {
+        if (typeof path === 'object' && path.length) {
             selector = uniquePath.selectorFromPath(path);
-        } else {
+        } else if (path && path.length) {
             selector = path;
         }
 
@@ -39,74 +40,112 @@
         }
     };
 
-    uniquePath.checkSpecificity = function (givenSpecificity) {
+    uniquePath.isUnique = function (givenSpecificity) {
         return givenSpecificity === 1;
     };
 
     uniquePath.getSelector = function (node) {
-        var value;
-        var type;
+        var result;
+
+        var selectorFromID = function () {
+            return {
+                type: 'id',
+                value: '#' + node.id
+            };
+        };
+
+        var selectorFromClass = function () {
+            var value = '.' + node.className
+                .split('\n').filter(Boolean) // get rid of \n
+                .join(' ').split(' ').filter(Boolean) // get rid of spaces
+                .join('.');
+
+            return {
+                type: 'class',
+                value: value
+            };
+        };
+
+        var selectorFromName = function () {
+            return {
+                type: 'name',
+                value: node.localName
+            };
+        };
 
         if (node) {
             if (node.id !== '') {
-                type = 'id';
-                value = '#' + node.id;
+                result = selectorFromID(node);
             } else if (node.className !== '' && typeof node.className !== 'object') {
-                type = 'class';
-
-                value = '.' + node.className.split('\n').filter(Boolean).join(uniquePath.separator).split(uniquePath.separator).filter(Boolean).join('.');
+                result = selectorFromClass(node);
             } else {
-                type = 'name';
-                value = node.localName;
+                result = selectorFromName(node);
             }
         }
 
-        return {
-            value: value,
-            type: type
-        };
+        return result;
     };
 
-    uniquePath.strengthenSpecificity = function (givenPath) {
+    uniquePath.applyNth = function (givenPath) {
         var newSpecificity;
 
         for (var i = 0; i < givenPath.length; i++) {
-            if (givenPath[i].node.parentNode && givenPath[i].node.parentNode.children.length > 1) {
-                var index = Array.prototype.indexOf.call(givenPath[i].node.parentNode.children, givenPath[i].node) + 1;
-                givenPath[i].selector.value = givenPath[i].selector.value + ':nth-child(' + index + ')';
+            var parent = givenPath[i].node.parentNode;
+            var item = givenPath[i];
+
+            if (parent && parent.children.length > 1) {
+                var index = Array.prototype.indexOf.call(parent.children, item.node) + 1;
+                item.selector.value += ':nth-child(' + index + ')';
             }
+
             newSpecificity = uniquePath.getSpecificity(givenPath);
         }
 
         for (var i = 0; i < givenPath.length; i++) {
-            var currentSelector = givenPath[i].selector.value;
-            var index = givenPath[i].selector.value.indexOf(':nth');
+            var item = givenPath[i];
+            var currentSelector = item.selector.value;
+            var index = item.selector.value.indexOf(':nth');
 
             if (index > -1) {
-                givenPath[i].selector.value = givenPath[i].selector.value.slice(0, index);
+                item.selector.value = item.selector.value.slice(0, index);
             }
 
             newSpecificity = uniquePath.getSpecificity(givenPath);
-            if (!uniquePath.checkSpecificity(newSpecificity)) {
-                givenPath[i].selector.value = currentSelector;
+            if (!uniquePath.isUnique(newSpecificity)) {
+                item.selector.value = currentSelector;
             }
         }
     };
 
-    uniquePath.strengthenSpecificityTwice = function (givenPath) {
+    uniquePath.applyMixed = function (givenPath) {
         for (var i = 0; i < givenPath.length; i++) {
-            if (givenPath[i].selector.type !== 'name') {
-                if (givenPath[i].selector.type === 'class') {
-                    givenPath[i].selector.value = givenPath[i].node.localName + givenPath[i].selector.value;
-                    givenPath[i].selector.type = 'mixed';
-                } else if (givenPath[i].selector.type === 'id') {
-                    givenPath[i].selector.value = givenPath[i].node.localName + givenPath[i].selector.value;
-                    givenPath[i].selector.type = 'mixed';
+            var item = givenPath[i];
+
+            if (item.selector.type !== 'name') {
+                if (item.selector.type === 'class') {
+                    item.selector.value = item.node.localName + item.selector.value;
+                    item.selector.type = 'mixed';
+                } else if (item.selector.type === 'id') {
+                    item.selector.value = item.node.localName + item.selector.value;
+                    item.selector.type = 'mixed';
                 }
             }
 
             var newSpecificity = uniquePath.getSpecificity(givenPath);
-            if (uniquePath.checkSpecificity(newSpecificity)) {
+            if (uniquePath.isUnique(newSpecificity)) {
+                break;
+            }
+        }
+    };
+
+    uniquePath.applyDirectChildSeparator = function (givenPath) {
+        for (var i = 0; i < givenPath.length - 1; i++) {
+            var item = givenPath[i];
+            var currentSeparator = item.separator;
+            item.separator = ' > ';
+
+            var newSpecificity = uniquePath.getSpecificity(givenPath);
+            if (uniquePath.isUnique(newSpecificity)) {
                 break;
             }
         }
@@ -116,9 +155,6 @@
         if (!el) {
             return false;
         }
-
-        var path = [];
-        var specificity;
 
         if (el.length) {
             el = el[0];
@@ -132,11 +168,15 @@
             return 'html';
         }
 
-        while (el.localName !== 'html' && !uniquePath.checkSpecificity(specificity)) {
+        var path = [];
+        var specificity;
+
+        while (el.localName !== 'html' && !uniquePath.isUnique(specificity)) {
             var selector = uniquePath.getSelector(el);
 
             path.unshift({
                 node: el,
+                separator: ' ',
                 selector: selector
             });
 
@@ -145,12 +185,16 @@
             el = el && el.parentNode;
         }
 
-        if (!uniquePath.checkSpecificity(specificity)) {
-            uniquePath.strengthenSpecificity(path);
+        if (!uniquePath.isUnique(specificity)) {
+            uniquePath.applyDirectChildSeparator(path);
         }
 
-        if (!uniquePath.checkSpecificity(specificity)) {
-            uniquePath.strengthenSpecificityTwice(path);
+        if (!uniquePath.isUnique(specificity)) {
+            uniquePath.applyMixed(path);
+        }
+
+        if (!uniquePath.isUnique(specificity)) {
+            uniquePath.applyNth(path);
         }
 
         return uniquePath.selectorFromPath(path);
