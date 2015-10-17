@@ -1,8 +1,10 @@
 module.exports = function (grunt) {
     'use strict';
 
-    var customLaunchers = require('../test/custom_launchers.js');
-    var plugins = require('../test/plugins.js');
+    var testPath = '../test/';
+
+    var customLaunchers = require(testPath + 'custom_launchers.js');
+    var plugins = require(testPath + 'plugins.js');
 
     return {
         options: {
