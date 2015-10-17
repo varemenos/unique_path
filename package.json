@@ -6,19 +6,18 @@
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run"
   },
-  "dependencies": {
-    "jasmine": "^2.3.2",
-    "karma": "^0.13.9",
-    "karma-html2js-preprocessor": "^0.1.0",
-    "karma-jasmine": "^0.3.6",
-    "karma-phantomjs-launcher": "^0.2.1",
-    "karma-spec-reporter": "0.0.20"
-  },
   "devDependencies": {
     "eslint": "^1.2.1",
     "grunt": "^0.4.5",
     "grunt-karma": "^0.12.0",
+    "jasmine": "^2.3.2",
     "jit-grunt": "^0.9.1",
+    "karma": "^0.13.9",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-sauce-launcher": "^0.2.14",
     "load-grunt-configs": "^0.4.3",
     "time-grunt": "^1.2.1"
   },
