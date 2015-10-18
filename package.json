@@ -10,6 +10,10 @@
   "files": [
       "src/unique_path.js"
   ],
+  "peerDependencies": {
+      "jasmine-core": "*",
+      "phantomjs": ">=1.9"
+  },
   "devDependencies": {
     "eslint": "^1.2.1",
     "grunt": "^0.4.5",
