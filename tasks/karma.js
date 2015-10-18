@@ -8,6 +8,7 @@ module.exports = function (grunt) {
 
     return {
         options: {
+            configFile: 'test/karma.conf.js',
             browsers: [
                 'PhantomJS',
                 'Chrome',
@@ -20,12 +21,10 @@ module.exports = function (grunt) {
             ].concat(plugins)
         },
         single: {
-            configFile: 'test/karma.conf.js',
             autoWatch: false,
             singleRun: true
         },
         continuous: {
-            configFile: 'test/karma.conf.js',
             autoWatch: true,
             singleRun: false
         }
