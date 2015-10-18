@@ -6,6 +6,10 @@
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run"
   },
+  "repository": "https://github.com/varemenos/unique_path",
+  "files": [
+      "src/unique_path.js"
+  ],
   "devDependencies": {
     "eslint": "^1.2.1",
     "grunt": "^0.4.5",
