@@ -10,7 +10,7 @@
   "files": [
       "src/unique_path.js"
   ],
-  "peerDependencies": {
+  "dependencies": {
       "jasmine-core": "*",
       "phantomjs": ">=1.9"
   },
