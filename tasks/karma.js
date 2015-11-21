@@ -27,6 +27,14 @@ module.exports = function (grunt) {
         continuous: {
             autoWatch: true,
             singleRun: false
+        },
+        dev: {
+            browsers: [
+                'Chrome',
+                'PhantomJS'
+            ],
+            autoWatch: true,
+            singleRun: false
         }
     };
 };

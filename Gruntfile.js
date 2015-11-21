@@ -16,6 +16,6 @@ module.exports = function (grunt) {
     grunt.initConfig(configs);
 
     grunt.registerTask('default', [
-        'karma:continuous'
+        'karma:dev'
     ]);
 };
