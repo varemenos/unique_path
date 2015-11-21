@@ -9,6 +9,7 @@
     }
 })(this, 'uniquePath', function () {
     'use strict';
+
     var uniquePath = {};
 
     uniquePath.selectorFromPath = function (givenPath) {

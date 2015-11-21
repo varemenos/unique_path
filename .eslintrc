@@ -1,6 +1,6 @@
 {
     "rules": {
-        "strict": [2, "global"],
+        "strict": [2, "function"],
         "comma-dangle": [2, "never"],
         "no-cond-assign": [2, "always"],
         "no-constant-condition": [2],
