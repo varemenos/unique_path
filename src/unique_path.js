@@ -24,6 +24,7 @@
 
     uniquePath.getSpecificity = function (path) {
         var selector;
+        var result = 0;
 
         if (typeof path === 'object' && path.length) {
             selector = uniquePath.selectorFromPath(path);
@@ -33,11 +34,11 @@
 
         if (selector) {
             try {
-                return document.querySelectorAll(selector).length;
+                result = document.querySelectorAll(selector).length;
             } catch (err) {} // eslint-disable-line no-empty
-        } else {
-            return 0;
         }
+
+        return result;
     };
 
     uniquePath.isUnique = function (givenSpecificity) {
