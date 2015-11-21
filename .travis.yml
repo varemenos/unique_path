@@ -2,4 +2,7 @@ language: node_js
 before_script:
     - npm install -g karma-cli jasmine karma karma-jasmine karma-phantomjs-launcher karma-chrome-launcher karma-firefox-launcher karma-sauce-launcher
 node_js:
-    - stable
+  - 'stable'
+  - '4'
+  - '0.12'
+  - '0.10'
