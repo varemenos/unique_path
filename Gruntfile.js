@@ -18,4 +18,9 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'karma:dev'
     ]);
+
+    grunt.registerTask('dist', [
+        'concat',
+        'uglify'
+    ]);
 };
