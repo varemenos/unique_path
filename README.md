@@ -3,7 +3,7 @@
 
 ## Description
 
-This is a front-end library that's all about selectors. It provides a reliable utilities for fetching unique selectors from DOM elements, getting the specificity of the selector from a selector string and more.
+This is a front-end library that's all about selectors. It provides reliable utilities for fetching unique selectors from DOM elements, getting the specificity of the selector from a selector string and more.
 
 ## Still a WIP
 
