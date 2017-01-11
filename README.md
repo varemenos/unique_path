@@ -7,7 +7,7 @@ This is a front-end library that's all about selectors. It provides reliable uti
 
 ## Still a WIP
 
-Contributations are welcome
+Contributions are welcome
 
 ## License
 
